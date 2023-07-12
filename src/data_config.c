@@ -15,7 +15,7 @@ The MCsquare software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
 
 DATA_config_dictionary *Init_Config(DATA_config *config){
 
-  unsigned int Num_Config_Tags = 75;
+  unsigned int Num_Config_Tags = 80;
 
   DATA_config_dictionary *config_dictionary = (DATA_config_dictionary*) malloc(Num_Config_Tags * sizeof(DATA_config_dictionary));
 
@@ -95,6 +95,12 @@ DATA_config_dictionary *Init_Config(DATA_config *config){
   Add_ulong_Config_element("Max_Num_Primaries", &config_dictionary[73], &config->Max_Num_Primaries, 1, 0, 0, ULONG_MAX);
   Add_uint_Config_element("Max_Simulation_time", &config_dictionary[74], &config->Max_Simulation_time, 1, 0, 0, UINT_MAX);
 
+//DEBUG
+  Add_bool_Config_element("Micro_ASCII_Output", &config_dictionary[75], &config->Micro_ASCII_Output, 1, 0);
+  Add_bool_Config_element("Micro_MHD_Output", &config_dictionary[76], &config->Micro_MHD_Output, 1, 0);
+  Add_bool_Config_element("Micro_Sparse_Output", &config_dictionary[77], &config->Micro_Sparse_Output, 1, 0);
+  Add_ureal_Config_element("Micro_Sparse_Threshold", &config_dictionary[78], &config->Micro_Sparse_Threshold, 1, 0.0, 0.0, 1e10);
+  Add_string_Config_element("Micro_LUT_Folder", &config_dictionary[79], &config->Micro_LUT_Folder, 1, "./", 1, 200);
 
   return config_dictionary;
 }
@@ -545,6 +551,12 @@ int Parse_Config(DATA_config *config, char *file_name){
   if(config->LET_ASCII_Output == 1 || config->LET_MHD_Output == 1 || config->LET_Sparse_Output == 1) config->Score_LET = 1;
   else config->Score_LET = 0;
 
+  //DEBUG
+  if(config->Micro_ASCII_Output == 1 || config->Micro_MHD_Output == 1 || config->Micro_Sparse_Output == 1) config->Score_Micro = 1;
+  else config->Score_Micro = 0;
+
+
+
   if(config->Energy_ASCII_Output == 1 || config->Energy_MHD_Output == 1 || config->Energy_Sparse_Output == 1) config->Score_Energy = 1;
   else config->Score_Energy = 0;
 
@@ -572,6 +584,7 @@ printf("HU_Density_Conversion_File = %s \n", config->HU_Density_File);
 printf("HU_Material_Conversion_File = %s \n", config->HU_Material_File);
 printf("BDL machine parameter file = %s \n", config->BDL_machine);
 printf("BDL plan file = %s \n\n", config->BDL_plan);
+printf("Microdosimetry Folder = %s \n", config->Micro_LUT_Folder); //DEBUG
 
 printf("Simulate_Nuclear_Interactions = %u \n", config->Simulate_Nuclear_Interactions);
 printf("Simulate_Secondary_Protons = %u \n", config->Simulate_Secondary_Protons);
@@ -617,6 +630,12 @@ printf("Dose_Sparse_Output = %u \n", config->Energy_Sparse_Output);
 printf("LET_ASCII_Output = %u \n", config->LET_ASCII_Output);
 printf("LET_MHD_Output = %u \n", config->LET_MHD_Output);
 printf("LET_Sparse_Output = %u \n\n", config->LET_Sparse_Output);
+//DEBUG
+printf("Score_Micro = %u \n", config->Score_Micro);
+printf("Micro_ASCII_Output = %u \n", config->Micro_ASCII_Output);
+printf("Micro_MHD_Output = %u \n", config->Micro_MHD_Output);
+printf("Micro_Sparse_Output = %u \n\n", config->Micro_Sparse_Output);
+
 
 printf("Densities_Output = %u \n", config->Densities_Output);
 printf("Materials_Output = %u \n\n", config->Materials_Output);
@@ -624,6 +643,7 @@ printf("Materials_Output = %u \n\n", config->Materials_Output);
 printf("Dose_Sparse_Threshold = %f \n", config->Dose_Sparse_Threshold);
 printf("Energy_Sparse_Threshold = %f \n", config->Energy_Sparse_Threshold);
 printf("LET_Sparse_Threshold = %f \n\n", config->LET_Sparse_Threshold);
+printf("Micro_Sparse_Threshold = %f \n\n", config->Micro_Sparse_Threshold); //DEBUG
 
 printf("Compute_DVH = %u \n\n", config->Compute_DVH);
 

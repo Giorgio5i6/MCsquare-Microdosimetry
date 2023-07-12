@@ -17,6 +17,7 @@ The MCsquare software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
 #include "struct.h"
 #include "compute_EM_interaction.h"
 #include "data_mhd.h"
+#include "data_micro.h"
 
 DATA_Scoring Init_Scoring(DATA_config *config, DATA_CT *ct, int init_dose_squared);
 void get_scoring_index(DATA_Scoring *scoring, VAR_COMPUTE *v_x, VAR_COMPUTE *v_y, VAR_COMPUTE *v_z, int *v_index);
@@ -30,5 +31,8 @@ void PG_Scoring(DATA_Scoring *scoring, VAR_COMPUTE position_x, VAR_COMPUTE posit
 void PostProcess_Scoring(DATA_Scoring *scoring, DATA_CT *ct, Materials *material, VAR_COMPUTE normalization, unsigned long Nbr_simulated_primaries, DATA_config *config);
 VAR_SCORING Process_batch(DATA_Scoring *Tot_scoring, DATA_Scoring *batch, Materials *material, DATA_CT *ct, int Num_batch, DATA_config *config);
 void Free_Scoring(DATA_Scoring *scoring);
+
+void Micro_Scoring(DATA_Scoring *scoring, VAR_COMPUTE position_x, VAR_COMPUTE position_y, VAR_COMPUTE position_z, VAR_COMPUTE multiplicity, VAR_COMPUTE dE, VAR_COMPUTE Ekin, VAR_COMPUTE ion_mass, DATA_Micro data_micro, DATA_config *config);
+
 
 #endif

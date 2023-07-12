@@ -69,6 +69,14 @@ struct DATA_PG{
 };
 
 
+typedef struct DATA_Micro DATA_Micro;
+struct DATA_Micro{
+	VAR_DATA *Energy_List;			// Energy per nucleon from Micro LUT
+	int Nbr_Data;				// Number of lines of the LUT
+	VAR_DATA *Alpha;			// LQ Alpha values as a function of kinetic energy/u
+	VAR_DATA *Sqrt_Beta;			// LQ sqrt(Beta) values as a function of kinetic energy/u
+};
+
 typedef struct Materials Materials;
 struct Materials{
 	char Name[50];		// Nom du matériau
@@ -176,6 +184,9 @@ struct DATA_Scoring{
 	VAR_SCORING *PG_spectrum;
 	VAR_SCORING *LET;
 	VAR_SCORING *LET_denominator;
+	VAR_SCORING *Micro_alpha; //DEBUG
+	VAR_SCORING *Micro_sqrtbeta; //DEBUG
+	VAR_SCORING *Micro_denominator; //DEBUG
 	int Nbr_voxels;
 	int GridSize[3];
 	VAR_COMPUTE Origin[3];
@@ -271,6 +282,7 @@ struct DATA_config{
 	char HU_Material_File[200];
 	char BDL_machine[200];
 	char BDL_plan[200];
+	char Micro_LUT_Folder[200]; //DEBUG
 
 	// Physical parameters
 	unsigned int Simulate_Nuclear_Interactions;
@@ -323,18 +335,23 @@ struct DATA_config{
 	unsigned int LET_ASCII_Output;
 	unsigned int LET_MHD_Output;
 	unsigned int LET_Sparse_Output;
+	unsigned int Micro_ASCII_Output; //DEBUG
+	unsigned int Micro_MHD_Output; //DEBUG
+	unsigned int Micro_Sparse_Output; //DEBUG
 	unsigned int Densities_Output;
 	unsigned int Materials_Output;
 	unsigned int Compute_DVH;
 	VAR_DATA Dose_Sparse_Threshold;
 	VAR_DATA Energy_Sparse_Threshold;
 	VAR_DATA LET_Sparse_Threshold;
+	VAR_DATA Micro_Sparse_Threshold; //DEBUG
 	unsigned int Score_PromptGammas;
 	VAR_DATA PG_LowEnergyCut;
 	VAR_DATA PG_HighEnergyCut;
 	unsigned int PG_Spectrum_NumBin;
 	VAR_DATA PG_Spectrum_Binning;
 	int LET_Calculation_Method;
+	int Micro_Calculation_Method; //DEBUG
 	unsigned int Export_Beam_dose;
 	int DoseToWater;
 	unsigned int Dose_Segmentation;
@@ -379,6 +396,7 @@ struct DATA_config{
 	enum Scenario_type Current_scenario_type;
 	VAR_DATA MCS_const;
 	unsigned int Score_LET;
+	unsigned int Score_Micro; //DEBUG
 	unsigned int Score_Energy;
 	DATA_StructList *StructList;
 

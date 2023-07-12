@@ -70,11 +70,11 @@ Max_Simulation_time		0	# Time limit (in minutes) after which the simulation stop
 ### Output parameters
 Output_Directory		Sample_input_data/Outputs	# Path to the output directory. Default: Outputs
 
-Energy_ASCII_Output		False	# Enable/Disable the output of Energy in ASCII format. Default: False
+Energy_ASCII_Output		True	# Enable/Disable the output of Energy in ASCII format. Default: False
 Energy_MHD_Output		False	# Enable/Disable the output of Energy in MHD format. Default: False
 Energy_Sparse_Output		False	# Enable/Disable the output of Energy in Sparse matrix format. Default: False
 Dose_ASCII_Output		False	# Enable/Disable the output of Dose in ASCII format. Default: False
-Dose_MHD_Output			True	# Enable/Disable the output of Dose in MHD format. Default: True
+Dose_MHD_Output			False	# Enable/Disable the output of Dose in MHD format. Default: True
 Dose_Sparse_Output		False	# Enable/Disable the output of Dose in Sparse matrix format. Default: False
 LET_ASCII_Output		False	# Enable/Disable the output of LET in ASCII format. Default: False
 LET_MHD_Output			False	# Enable/Disable the output of LET in MHD format. Default: False

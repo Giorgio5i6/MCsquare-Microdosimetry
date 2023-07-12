@@ -26,10 +26,10 @@ The MCsquare software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
 #include "compute_4D.h"
 #include "data_4D.h"
 #include "compute_scoring.h"
+#include "data_micro.h"
 
-
-void Run_simulation(DATA_config *config, Materials *material, DATA_CT *ct, plan_parameters *plan, machine_parameters *machine, DATA_4D_Fields *Fields);
+void Run_simulation(DATA_config *config, Materials *material, DATA_CT *ct, plan_parameters *plan, machine_parameters *machine, DATA_4D_Fields *Fields, BioModel_parameters biomodel);
 void Display_simulation_progression(DATA_config *config, char *progress_message);
-unsigned long Simulation_loop(DATA_config *config, Materials *material, DATA_CT *ct, plan_parameters *plan, machine_parameters *machine, DATA_4D_Fields *Fields, DATA_Scoring *Tot_scoring, unsigned long Num_primaries);
+unsigned long Simulation_loop(DATA_config *config, Materials *material, DATA_CT *ct, plan_parameters *plan, machine_parameters *machine, DATA_4D_Fields *Fields, DATA_Scoring *Tot_scoring, unsigned long Num_primaries, BioModel_parameters biomodel);
 
 #endif

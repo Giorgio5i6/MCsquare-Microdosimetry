@@ -1,0 +1,53 @@
+#TREATMENT-PLAN-DESCRIPTION
+#PlanName
+PlanPencil
+#NumberOfFractions
+1
+##FractionID
+1
+##NumberOfFields
+1
+###FieldsID
+1
+
+#TotalMetersetWeightOfAllFields
+24.636086
+
+#FIELD-DESCRIPTION
+###FieldID
+1
+###FinalCumulativeMeterSetWeight
+24.636086
+###GantryAngle
+0.000000
+###PatientSupportAngle
+0.000000
+###IsocenterPosition
+149.000000	 151.000000	 49.500000
+###RangeShifterID
+RS_Block
+###RangeShifterType
+binary
+###NumberOfControlPoints
+1
+
+#SPOTS-DESCRIPTION
+####ControlPointIndex
+1
+####SpotTunnedID
+1
+####CumulativeMetersetWeight
+24.636086
+####Energy (MeV)
+141.598247
+####RangeShifterSetting
+IN
+####IsocenterToRangeShifterDistance
+300.000000
+####RangeShifterWaterEquivalentThickness
+74.100000
+####NbOfScannedSpots
+1
+####X Y Weight
+0.000000 0.000000 24.636086 
+

@@ -1,0 +1,127 @@
+compute_scoring.c:101:  v_index[vALL] = 	(int)floor( (scoring->Length[0]-v_x[vALL]+scoring->Offset[0]) / scoring->VoxelLength[0] ) 
+compute_scoring.c:102:			+ scoring->GridSize[0] * (int)floor( (v_y[vALL]-scoring->Offset[1]) / scoring->VoxelLength[1] ) 
+compute_scoring.c:103:			+ scoring->GridSize[0] * scoring->GridSize[1] * (int)floor( (v_z[vALL]-scoring->Offset[2]) / scoring->VoxelLength[2] );
+compute_scoring.c:105:  if(v_x[vALL] < scoring->Offset[0] || v_y[vALL] < scoring->Offset[1] || v_z[vALL] < scoring->Offset[2] || 
+compute_scoring.c:106:	 v_x[vALL] > scoring->Grid_end[0] || v_y[vALL] > scoring->Grid_end[1] || v_z[vALL] > scoring->Grid_end[2] ||
+compute_scoring.c:107:	 v_index[vALL] < 0 || v_index[vALL] > scoring->Nbr_voxels) v_index[vALL] = -1;
+compute_scoring.c:114:  if(position_x < scoring->Offset[0] || position_y < scoring->Offset[1] || position_z < scoring->Offset[2] || position_x > scoring->Grid_end[0] || position_y > scoring->Grid_end[1] || position_z > scoring->Grid_end[2]) return -1;
+compute_scoring.c:116:   int index = 	(int)floor( (scoring->Length[0]-position_x+scoring->Offset[0]) / scoring->VoxelLength[0] ) 
+compute_scoring.c:117:			+ scoring->GridSize[0] * (int)floor( (position_y-scoring->Offset[1]) / scoring->VoxelLength[1] ) 
+compute_scoring.c:118:			+ scoring->GridSize[0] * scoring->GridSize[1] * (int)floor( (position_z-scoring->Offset[2]) / scoring->VoxelLength[2] );
+compute_scoring.c:120:  if(index > scoring->Nbr_voxels) return -1;
+compute_scoring.c:129:  int IDz = (int) floor( Scoring_ID / (scoring->GridSize[0]*scoring->GridSize[1]) );
+compute_scoring.c:130:  int IDy = (int) floor( (Scoring_ID-IDz*scoring->GridSize[0]*scoring->GridSize[1]) / scoring->GridSize[0] );
+compute_scoring.c:131:  int IDx = Scoring_ID - IDz*scoring->GridSize[0]*scoring->GridSize[1] - IDy*scoring->GridSize[0];
+compute_scoring.c:133:  VAR_COMPUTE x = scoring->Length[0] + scoring->Offset[0] - (0.5+IDx) * scoring->VoxelLength[0];
+compute_scoring.c:134:  VAR_COMPUTE y = scoring->Offset[1] + (0.5+IDy) * scoring->VoxelLength[1];
+compute_scoring.c:135:  VAR_COMPUTE z = scoring->Offset[2] + (0.5+IDz) * scoring->VoxelLength[2];
+compute_scoring.c:159:  int IDz = (int) floor( Scoring_ID / (scoring->GridSize[0]*scoring->GridSize[1]) );
+compute_scoring.c:160:  int IDy = (int) floor( (Scoring_ID-IDz*scoring->GridSize[0]*scoring->GridSize[1]) / scoring->GridSize[0] );
+compute_scoring.c:161:  int IDx = Scoring_ID - IDz*scoring->GridSize[0]*scoring->GridSize[1] - IDy*scoring->GridSize[0];
+compute_scoring.c:166:  for(dx=0; dx<=ceil(scoring->VoxelLength[0]/ct->VoxelLength[0]); dx++){
+compute_scoring.c:167:    for(dy=0; dy<=ceil(scoring->VoxelLength[1]/ct->VoxelLength[1]); dy++){
+compute_scoring.c:168:      for(dz=0; dz<=ceil(scoring->VoxelLength[2]/ct->VoxelLength[2]); dz++){
+compute_scoring.c:170:        x = scoring->Length[0] + scoring->Offset[0] - IDx*scoring->VoxelLength[0] - dx*ct->VoxelLength[0];
+compute_scoring.c:171:        y = scoring->Offset[1] + IDy*scoring->VoxelLength[1] + dy*ct->VoxelLength[1];
+compute_scoring.c:172:        z = scoring->Offset[2] + IDz*scoring->VoxelLength[2] + dz*ct->VoxelLength[2];
+compute_scoring.c:214:    if(v_scored_value[i] != 0.0 && v_index[i] >= 0) scoring->dose[v_index[i]] += v_scored_value[i];
+compute_scoring.c:221:      if(v_scored_value[i] != 0.0 && v_index[i] >= 0) scoring->energy[v_index[i]] += v_scored_value[i];
+compute_scoring.c:251:    scoring->LET[index] += multiplicity * dE * dE / step;
+compute_scoring.c:254:    scoring->LET[index] += multiplicity * dE * stop_pow;
+compute_scoring.c:257:  scoring->LET_denominator[index] += multiplicity * dE;
+compute_scoring.c:268:    scoring->PG_particles[index] += multiplicity;
+compute_scoring.c:269:    if(PG_energy >= config->PG_Spectrum_Binning*config->PG_Spectrum_NumBin) scoring->PG_spectrum[config->PG_Spectrum_NumBin-1] += multiplicity;
+compute_scoring.c:270:    else scoring->PG_spectrum[(int)floor(PG_energy / config->PG_Spectrum_Binning)] += multiplicity;
+compute_scoring.c:283:    scoring->Micro[index] += multiplicity * dE * dE;
+compute_scoring.c:284:    //scoring->Micro[index] += multiplicity * Ekin / UMeV;
+compute_scoring.c:288:    scoring->Micro[index] += multiplicity * dE * stop_pow;
+compute_scoring.c:289:    //scoring->Micro[index] += multiplicity * Ekin / UMeV;
+compute_scoring.c:293:  scoring->Micro_denominator[index] += multiplicity * dE;
+compute_scoring.c:294:  //scoring->Micro_denominator[index] += multiplicity;
+compute_scoring.c:302:  double voxel_volume = scoring->VoxelLength[0]*scoring->VoxelLength[1]*scoring->VoxelLength[2];
+compute_scoring.c:308:      for(ii=0; ii<scoring->Nbr_voxels; ii++) scoring->dose[ii] /= material[ct->material[ii]].SPR;
+compute_scoring.c:311:      for(ii=0; ii<scoring->Nbr_voxels; ii++){
+compute_scoring.c:313:        scoring->dose[ii] /= material[ct->material[CT_ID]].SPR;
+compute_scoring.c:318:  for(ii=0; ii<scoring->Nbr_voxels; ii++){
+compute_scoring.c:319:    scoring->dose[ii] = scoring->dose[ii] * normalization / Nbr_simulated_primaries;
+compute_scoring.c:320:    scoring->dose[ii] *= (scoring->dose[ii] > 0);
+compute_scoring.c:321:    scoring->dose[ii] = scoring->dose[ii] / voxel_volume; // Volume weighting
+compute_scoring.c:326:      for(ii=0; ii<scoring->Nbr_voxels; ii++) scoring->dose[ii] *= (ct->density[ii] > config->Segmentation_Density_Threshold);
+compute_scoring.c:329:      for(ii=0; ii<scoring->Nbr_voxels; ii++){
+compute_scoring.c:331:        scoring->dose[ii] *= (ct->density[CT_ID] > config->Segmentation_Density_Threshold);
+compute_scoring.c:337:    for(ii=0; ii<scoring->Nbr_voxels; ii++){
+compute_scoring.c:338:      scoring->energy[ii] = scoring->energy[ii] * normalization / Nbr_simulated_primaries;
+compute_scoring.c:339:      scoring->energy[ii] *= (scoring->energy[ii] > 0);
+compute_scoring.c:344:    for(ii=0; ii<scoring->Nbr_voxels; ii++){
+compute_scoring.c:345:      scoring->PG_particles[ii] = scoring->PG_particles[ii] * normalization / Nbr_simulated_primaries;
+compute_scoring.c:350:    for(ii=0; ii<scoring->Nbr_voxels; ii++){
+compute_scoring.c:351:      scoring->LET[ii] = (scoring->LET[ii] > 0) * scoring->LET[ii] / ((scoring->LET_denominator[ii] * 1e7) + FLT_EPSILON);
+compute_scoring.c:352:      scoring->Micro[ii] = scoring->Micro[ii] / scoring->Micro_denominator[ii]; //DEBUG
+compute_scoring.c:361:  //double voxel_volume = Tot_scoring->VoxelLength[0]*Tot_scoring->VoxelLength[1]*Tot_scoring->VoxelLength[2];
+compute_scoring.c:369:    for(int j=0; j<Tot_scoring->Nbr_voxels; j++){
+compute_scoring.c:371:      Tot_scoring->dose[j] += batch->dose[j];
+compute_scoring.c:372:      Tot_scoring->dose_squared[j] += batch->dose[j] * batch->dose[j];
+compute_scoring.c:373:      if(ct->density[j] > 0.2 && max_dose < Tot_scoring->dose[j]) max_dose = (4*max_dose + Tot_scoring->dose[j])/5; // slow increase of max_dose to avoid noise bias
+compute_scoring.c:378:    for(int j=0; j<Tot_scoring->Nbr_voxels; j++){
+compute_scoring.c:379:      Tot_scoring->dose[j] += batch->dose[j];
+compute_scoring.c:380:      Tot_scoring->dose_squared[j] += batch->dose[j] * batch->dose[j];
+compute_scoring.c:381:      if(max_dose < Tot_scoring->dose[j] && Voxel_contains_low_density(j, Tot_scoring, ct) == 0) max_dose = (4*max_dose + Tot_scoring->dose[j])/5; // slow increase of max_dose to avoid noise bias
+compute_scoring.c:387:    for(int j=0; j<Tot_scoring->Nbr_voxels; j++){
+compute_scoring.c:388:      Tot_scoring->energy[j] += batch->energy[j];
+compute_scoring.c:394:    for(int j=0; j<Tot_scoring->Nbr_voxels; j++){
+compute_scoring.c:395:      Tot_scoring->LET[j] += batch->LET[j];
+compute_scoring.c:396:      Tot_scoring->LET_denominator[j] += batch->LET_denominator[j];
+compute_scoring.c:398:      Tot_scoring->Micro[j] += batch->Micro[j];
+compute_scoring.c:399:      Tot_scoring->Micro_denominator[j] += batch->Micro_denominator[j];
+compute_scoring.c:405:    for(int j=0; j<Tot_scoring->Nbr_voxels; j++){
+compute_scoring.c:406:      Tot_scoring->PG_particles[j] += batch->PG_particles[j];
+compute_scoring.c:410:    for(int j=0; j<config->PG_Spectrum_NumBin; j++) Tot_scoring->PG_spectrum[j] += batch->PG_spectrum[j];
+compute_scoring.c:416:    for(int j=0; j<Tot_scoring->Nbr_voxels; j++){
+compute_scoring.c:417:      if(Tot_scoring->dose[j] > 0.5*max_dose && (config->Ignore_low_density_voxels == 0 || ct->density[j] > 0.2)){
+compute_scoring.c:418:        sigma += sqrt(Num_batch * (Tot_scoring->dose_squared[j]*Num_batch/(Tot_scoring->dose[j]*Tot_scoring->dose[j]) - 1.0) );
+compute_scoring.c:424:    for(int j=0; j<Tot_scoring->Nbr_voxels; j++){
+compute_scoring.c:426:      if(Tot_scoring->dose[j] > 0.5*max_dose && (config->Ignore_low_density_voxels == 0 || Voxel_contains_low_density(j, Tot_scoring, ct) == 0)){
+compute_scoring.c:427:        sigma += sqrt(Num_batch * (Tot_scoring->dose_squared[j]*Num_batch/(Tot_scoring->dose[j]*Tot_scoring->dose[j]) - 1.0) );
+compute_scoring.c:440:    batch_dose = (VAR_SCORING*)calloc(Tot_scoring->Nbr_voxels, sizeof(VAR_SCORING));
+compute_scoring.c:442:    double voxel_volume = Tot_scoring->VoxelLength[0]*Tot_scoring->VoxelLength[1]*Tot_scoring->VoxelLength[2];
+compute_scoring.c:446:      for(ii=0; ii<Tot_scoring->Nbr_voxels; ii++){
+compute_scoring.c:447:        batch_dose[ii] = Tot_scoring->dose[ii] / (Num_batch*config->Num_Primaries/MIN_NUM_BATCH);
+compute_scoring.c:455:      for(ii=0; ii<Tot_scoring->Nbr_voxels; ii++){
+compute_scoring.c:457:        batch_dose[ii] = Tot_scoring->dose[ii] / (Num_batch*config->Num_Primaries/MIN_NUM_BATCH);
+compute_scoring.c:473:    export_MHD_image(file_path, Tot_scoring->GridSize, Tot_scoring->VoxelLength, Tot_scoring->Origin, batch_dose);
+compute_scoring.c:493:  if(scoring->energy != NULL) free(scoring->energy);
+compute_scoring.c:494:  if(scoring->dose != NULL) free(scoring->dose);
+compute_scoring.c:495:  if(scoring->dose_squared != NULL) free(scoring->dose_squared);
+compute_scoring.c:497:  if(scoring->PG_particles != NULL) free(scoring->PG_particles);
+compute_scoring.c:498:  if(scoring->PG_spectrum != NULL) free(scoring->PG_spectrum);
+compute_scoring.c:500:  if(scoring->LET != NULL) free(scoring->LET);
+compute_scoring.c:501:  if(scoring->LET_denominator != NULL) free(scoring->LET_denominator);
+compute_scoring.c:503:  if(scoring->Micro != NULL) free(scoring->Micro);
+compute_scoring.c:504:  if(scoring->Micro_denominator != NULL) free(scoring->Micro_denominator);
+compute_simulation.c:557:for(k=0; k<Tot_scoring->Nbr_voxels; ++k){
+compute_simulation.c:559:		Tot_scoring->dose[k] += ptr_dose_scoring[p][k];  
+compute_simulation.c:565:	for(k=0; k<Tot_scoring->Nbr_voxels; ++k){
+compute_simulation.c:567:			Tot_scoring->energy[k] += ptr_energy_scoring[p][k]; 
+compute_simulation.c:574:	for(k=0; k<Tot_scoring->Nbr_voxels; ++k){
+compute_simulation.c:576:			Tot_scoring->LET[k] += ptr_LET_scoring[p][k];
+compute_simulation.c:577:			Tot_scoring->LET_denominator[k] += ptr_LET_denominator[p][k];
+compute_simulation.c:580:			Tot_scoring->Micro[k] += ptr_Micro_scoring[p][k];
+compute_simulation.c:581:			Tot_scoring->Micro_denominator[k] += ptr_Micro_denominator[p][k];
+compute_simulation.c:590:	for(k=0; k<Tot_scoring->Nbr_voxels; ++k){
+compute_simulation.c:592:			Tot_scoring->PG_particles[k] += ptr_PG_scoring[p][k];
+compute_simulation.c:599:			Tot_scoring->PG_spectrum[k] += ptr_PG_spectrum[p][k]; 
+data_sparse.c:91:    fprintf(file_header, "ImageSize = %d %d %d\n", scoring->GridSize[0], scoring->GridSize[1], scoring->GridSize[2]);
+data_sparse.c:93:      fprintf(file_header, "VoxelSpacing = %f %f %f\n", 10*scoring->VoxelLength[0], 10*scoring->VoxelLength[1], 10*scoring->VoxelLength[2]);
+data_sparse.c:94:      fprintf(file_header, "Offset = %f %f %f\n", 10*scoring->Origin[0], 10*scoring->Origin[1], 10*scoring->Origin[2]);
+data_sparse.c:96:      fprintf(file_header, "VoxelSpacing = %lf %lf %lf\n", 10*scoring->VoxelLength[0], 10*scoring->VoxelLength[1], 10*scoring->VoxelLength[2]);
+data_sparse.c:97:      fprintf(file_header, "Offset = %lf %lf %lf\n", 10*scoring->Origin[0], 10*scoring->Origin[1], 10*scoring->Origin[2]);
+data_sparse.c:111:  for(i=1; i<=scoring->GridSize[2]; i++){
+data_sparse.c:112:    for(j=1; j<=scoring->GridSize[1]; j++){
+data_sparse.c:113:      for(k=1; k<=scoring->GridSize[0]; k++){
+data_sparse.c:141:  for(i=1; i<=scoring->GridSize[2]; i++){
+data_sparse.c:142:    for(j=1; j<=scoring->GridSize[1]; j++){
+data_sparse.c:143:      for(k=1; k<=scoring->GridSize[0]; k++){
+data_sparse.c:174:  float *value_array = (float*)malloc(scoring->GridSize[0]*scoring->GridSize[1]*scoring->GridSize[2] * sizeof(float));
+data_sparse.c:177:  for(i=1; i<=scoring->GridSize[2]; i++){
+data_sparse.c:178:    for(j=1; j<=scoring->GridSize[1]; j++){
+data_sparse.c:179:      for(k=1; k<=scoring->GridSize[0]; k++){

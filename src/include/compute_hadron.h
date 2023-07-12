@@ -21,8 +21,8 @@ The MCsquare software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
 #include "compute_Fippel.h"
 #include "compute_random.h"
 #include "compute_scoring.h"
+#include "data_micro.h"
 
-
-void hadron_step(Hadron *hadron, DATA_Scoring *scoring, Materials *material, DATA_CT *ct, Hadron_buffer *secondary_hadron, int *Nbr_secondaries, VSLStreamStatePtr RNG_Stream, DATA_config *config);
+void hadron_step(Hadron *hadron, DATA_Scoring *scoring, Materials *material, DATA_CT *ct, Hadron_buffer *secondary_hadron, int *Nbr_secondaries, VSLStreamStatePtr RNG_Stream, DATA_config *config, BioModel_parameters biomodel);
 
 #endif

@@ -299,11 +299,29 @@ void Scenario_simulation(DATA_config *config, Materials *material, DATA_CT *ct, 
   int tmp_current_phase, tmp_num_phases;
   VAR_DATA *tmp_field_ptr;
 
+  //DEBUG
+  BioModel_parameters Microdosimetry;
+  if(config -> Score_Micro == 1){
+	  int error = Read_Micro_LUT("LUT_H.dat", &Microdosimetry.LUT_micro_P,config); 
+	  if(error == 1){
+		  //Free_BioModel_Parameters(&Microdosimetry);
+		  return 1;
+	  }
+	  
+	  if(Read_Micro_LUT("LUT_He.dat", &Microdosimetry.LUT_micro_He, config) == 1){
+		  //Free_BioModel_Parameters(&Microdosimetry);
+		  return 1;
+	  }
+	  //else Microdosimetry->LUT_micro_He = lut_He;
+  }
+
+
+
   strcpy(config->output_beams_suffix, "");
 
   if(config->Beamlet_Mode == 1 && config->Beamlet_Parallelization == 1){	// Beamlet mode
-    if(config->Simu_4D_Mode == 0) Run_simulation_beamlet(config, material, &ct, plan, machine, Fields);
-    else Run_simulation_beamlet(config, material, CT_phases, plan, machine, Fields);
+    if(config->Simu_4D_Mode == 0) Run_simulation_beamlet(config, material, &ct, plan, machine, Fields, Microdosimetry);
+    else Run_simulation_beamlet(config, material, CT_phases, plan, machine, Fields, Microdosimetry);
   }
   else if(config->Beamlet_Mode == 1 && config->Beamlet_Parallelization == 0){
 
@@ -330,7 +348,7 @@ void Scenario_simulation(DATA_config *config, Materials *material, DATA_CT *ct, 
               printf("\nBeamlet %d / %d \n", current_spot, config->TotalNbrSpots);
 
             sprintf(config->output_4D_suffix, "");
-            Run_simulation(config, material, ct, Beamlet, machine, Fields);
+            Run_simulation(config, material, ct, Beamlet, machine, Fields, Microdosimetry);
           }
           else{ 	// 4D mode
             for(a=0; a <config->Num_4DCT_phases; a++){
@@ -343,7 +361,7 @@ void Scenario_simulation(DATA_config *config, Materials *material, DATA_CT *ct, 
 
               sprintf(config->output_4D_suffix, "_Phase%d", a+1);
               config->Current_4D_phase = a;
-              Run_simulation(config, material, CT_phases[a], Beamlet, machine, Fields);
+              Run_simulation(config, material, CT_phases[a], Beamlet, machine, Fields, Microdosimetry);
             }
           }
         }
@@ -378,7 +396,7 @@ void Scenario_simulation(DATA_config *config, Materials *material, DATA_CT *ct, 
         if(config->Current_scenario_type == Nominal) printf("\nRobustness simulation (Nominal)\n");
         else if(config->Current_scenario_type == Uncertainty) printf("\nRobustness simulation (scenario %d/%d - fraction %d/%d)\n", config->Current_scenario, config->TotalNumScenarios, config->Current_fraction, plan->NumberOfFractions);
       
-        Run_simulation(config, material, ct, plan, machine, Fields);
+        Run_simulation(config, material, ct, plan, machine, Fields, Microdosimetry);
       }
       
       else if(config->Robustness_Mode == 1 && config->Current_scenario_type != Nominal && config->Dose_4D_Accumulation == 0){ // 4D robustness test without phase accumulation (ITV like)
@@ -394,7 +412,7 @@ void Scenario_simulation(DATA_config *config, Materials *material, DATA_CT *ct, 
         tmp_field_ptr = Fields->Phase2Ref[0];
         Fields->Phase2Ref[0] = Fields->Phase2Ref[tmp_current_phase];
         
-        Run_simulation(config, material, CT_phases[tmp_current_phase], plan, machine, Fields);
+        Run_simulation(config, material, CT_phases[tmp_current_phase], plan, machine, Fields, Microdosimetry);
         
         // restore initial config
         config->Dose_4D_Accumulation = 0;
@@ -417,11 +435,11 @@ void Scenario_simulation(DATA_config *config, Materials *material, DATA_CT *ct, 
 
           if(config->Dynamic_delivery == 1 && config->Current_scenario_type != Nominal){	// Interplay simulation (dynamic delivery)
             plan_parameters *partial_plan = Spot_Sorting(config, a, plan);
-            Run_simulation(config, material, CT_phases[a], partial_plan, machine, Fields);
+            Run_simulation(config, material, CT_phases[a], partial_plan, machine, Fields, Microdosimetry);
             Free_Plan_Parameters(partial_plan);
           }
           else{
-            Run_simulation(config, material, CT_phases[a], plan, machine, Fields);	// No interplay simulation (breathing motion only)
+            Run_simulation(config, material, CT_phases[a], plan, machine, Fields, Microdosimetry);	// No interplay simulation (breathing motion only)
           }
 
         } // 4D loop

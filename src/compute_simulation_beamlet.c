@@ -13,7 +13,7 @@ The MCsquare software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
 #include "include/compute_simulation_beamlet.h"
 
 
-void Run_simulation_beamlet(DATA_config *config, Materials *material, DATA_CT **CT_phases, plan_parameters *plan, machine_parameters *machine, DATA_4D_Fields *Fields){
+void Run_simulation_beamlet(DATA_config *config, Materials *material, DATA_CT **CT_phases, plan_parameters *plan, machine_parameters *machine, DATA_4D_Fields *Fields, BioModel_parameters biomodel){
 
   int spotID;
 
@@ -36,6 +36,8 @@ void Run_simulation_beamlet(DATA_config *config, Materials *material, DATA_CT **
     VAR_SCORING *PG_accumulation;
     VAR_SCORING *PG_Spectrum_accumulation;
     VAR_SCORING *LET_accumulation;
+    VAR_SCORING *Micro_accumulation_alpha; //DEBUG
+    VAR_SCORING *Micro_accumulation_sqrtbeta; //DEBUG
     VAR_COMPUTE *deformed;
 
     DATA_CT *ct = NULL;
@@ -124,7 +126,7 @@ void Run_simulation_beamlet(DATA_config *config, Materials *material, DATA_CT **
 	  }
         }
 
-        hadron_step(&hadron, &Tot_scoring, material, ct, HadronToSimulate, &Nbr_HadronToSimulate, RNDstream, config);
+        hadron_step(&hadron, &Tot_scoring, material, ct, HadronToSimulate, &Nbr_HadronToSimulate, RNDstream, config, biomodel);
       }
 
       time_MC = omp_get_wtime();
@@ -235,6 +237,34 @@ void Run_simulation_beamlet(DATA_config *config, Materials *material, DATA_CT **
 	    if(Tot_scoring.LET != NULL) free(Tot_scoring.LET);
             Tot_scoring.LET = LET_accumulation;
           }
+	}
+	 
+       
+        if(config->Score_Micro == 1){
+	 if(a == 0 && (config->Current_fraction == 1 || config->Fraction_accumulation == 0)) Micro_accumulation_alpha = (VAR_SCORING*)calloc(Tot_scoring.Nbr_voxels, sizeof(VAR_SCORING));
+	 if(a == 0 && (config->Current_fraction == 1 || config->Fraction_accumulation == 0)) Micro_accumulation_sqrtbeta = (VAR_SCORING*)calloc(Tot_scoring.Nbr_voxels, sizeof(VAR_SCORING));
+
+          if(config->Simu_4D_Mode == 0){
+            for(ii=0; ii<Tot_scoring.Nbr_voxels; ii++) Micro_accumulation_alpha[ii] += Tot_scoring.Micro_alpha[ii] * norm_factor;
+            for(ii=0; ii<Tot_scoring.Nbr_voxels; ii++) Micro_accumulation_sqrtbeta[ii] += Tot_scoring.Micro_sqrtbeta[ii] * norm_factor;
+          }
+          else{
+            deformed = Image_deformation(Tot_scoring.Micro_alpha, Tot_scoring.GridSize, Tot_scoring.VoxelLength, Tot_scoring.Origin, Fields->Phase2Ref[a], Fields->GridSize, Fields->Spacing, Fields->Origin);
+            for(ii=0; ii<Tot_scoring.Nbr_voxels; ii++) Micro_accumulation_alpha[ii] += deformed[ii] * norm_factor;
+ 
+	    deformed = Image_deformation(Tot_scoring.Micro_sqrtbeta, Tot_scoring.GridSize, Tot_scoring.VoxelLength, Tot_scoring.Origin, Fields->Phase2Ref[a], Fields->GridSize, Fields->Spacing, Fields->Origin);
+            for(ii=0; ii<Tot_scoring.Nbr_voxels; ii++) Micro_accumulation_sqrtbeta[ii] += deformed[ii] * norm_factor;
+            free(deformed);
+          }
+      
+          if(a == (config->Num_4DCT_phases-1) && config->Current_fraction == plan->NumberOfFractions){
+	    export_results = 1;
+	    if(Tot_scoring.Micro_alpha != NULL) free(Tot_scoring.Micro_alpha);
+            Tot_scoring.Micro_alpha = Micro_accumulation_alpha;
+       
+	    if(Tot_scoring.Micro_sqrtbeta != NULL) free(Tot_scoring.Micro_sqrtbeta);
+            Tot_scoring.Micro_sqrtbeta = Micro_accumulation_sqrtbeta;
+  }
         }
 
       }

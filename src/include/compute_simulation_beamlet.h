@@ -29,6 +29,6 @@ The MCsquare software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
 #include "File_process.h"
 
 
-void Run_simulation_beamlet(DATA_config *config, Materials *material, DATA_CT **CT_phases, plan_parameters *plan, machine_parameters *machine, DATA_4D_Fields *Fields);
+void Run_simulation_beamlet(DATA_config *config, Materials *material, DATA_CT **CT_phases, plan_parameters *plan, machine_parameters *machine, DATA_4D_Fields *Fields, BioModel_parameters biomodel);
 
 #endif

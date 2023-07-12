@@ -12,8 +12,7 @@ The MCsquare software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
 
 #include "include/compute_hadron.h"
 
-
-void hadron_step(Hadron *hadron, DATA_Scoring *scoring, Materials *material, DATA_CT *ct, Hadron_buffer *secondary_hadron, int *Nbr_secondaries, VSLStreamStatePtr RNG_Stream, DATA_config *config){
+void hadron_step(Hadron *hadron, DATA_Scoring *scoring, Materials *material, DATA_CT *ct, Hadron_buffer *secondary_hadron, int *Nbr_secondaries, VSLStreamStatePtr RNG_Stream, DATA_config *config, BioModel_parameters biomodel){
   
   __assume_aligned(&hadron->v_x, 64);
   __assume_aligned(&hadron->v_y, 64);
@@ -34,7 +33,7 @@ void hadron_step(Hadron *hadron, DATA_Scoring *scoring, Materials *material, DAT
   __assume_aligned(&hadron->v_gamma, 64);
   __assume_aligned(&hadron->v_beta2, 64);
   __assume_aligned(&hadron->v_Te_max, 64);
-  
+	  
 
 
   Update_Hadron(hadron);
@@ -301,6 +300,18 @@ void hadron_step(Hadron *hadron, DATA_Scoring *scoring, Materials *material, DAT
         }
 
         if(config->Score_LET == 1) LET_Scoring(scoring, scoring_x[i], scoring_y[i], scoring_z[i], hadron->v_M[i], v_dE[i]+v_dE_hard[i], v_step[i], v_stop_pow[i], config);
+        if(config->Score_Micro == 1) {
+
+		if(hadron->v_charge[i] == 1)
+			Micro_Scoring(scoring, scoring_x[i], scoring_y[i], scoring_z[i], hadron->v_M[i], v_dE[i]+v_dE_hard[i], hadron->v_T[i], hadron->v_mass[i], biomodel.LUT_micro_P, config); //DEBUG
+		else if(hadron->v_charge[i] == 2)
+			Micro_Scoring(scoring, scoring_x[i], scoring_y[i], scoring_z[i], hadron->v_M[i], v_dE[i]+v_dE_hard[i], hadron->v_T[i], hadron->v_mass[i], biomodel.LUT_micro_He, config); //DEBUG
+		else 
+			Micro_Scoring(scoring, scoring_x[i], scoring_y[i], scoring_z[i], hadron->v_M[i], v_dE[i]+v_dE_hard[i], 0.0, 1.0, biomodel.LUT_micro_P, config); //DEBUG
+
+
+	}
+
       }
 
     }

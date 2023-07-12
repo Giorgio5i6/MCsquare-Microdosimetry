@@ -22,6 +22,7 @@ The MCsquare software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
 #include "include/data_ct_mhd.h"
 #include "include/data_contours.h"
 #include "include/data_beam_model.h"
+#include "include/data_micro.h" //DEBUG 
 #include "include/compute_4D.h"
 #include "include/compute_simulation.h"
 #include "include/compute_simulation_beamlet.h"
@@ -33,7 +34,7 @@ The MCsquare software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
 #include "include/compute_scenario_simulation.h"
 
 //#include <unistd.h>
-
+//ciao
 int main(int argc, char *argv[]){
 
   //////////////////////
@@ -253,6 +254,7 @@ int main(int argc, char *argv[]){
   }
 
 
+ 
   //////////////////////
   // Start computation
   //////////////////////

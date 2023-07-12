@@ -154,6 +154,9 @@ struct machine_parameters
     VAR_DATA *SpotSize2y;
     VAR_DATA *Divergence2y;
     VAR_DATA *Correlation2y;
+
+
+    DATA_Micro *data_micro_LUT;
 };
 
 

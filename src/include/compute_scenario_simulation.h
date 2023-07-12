@@ -22,6 +22,7 @@ The MCsquare software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
 #include "compute_beam_model.h"
 #include "compute_4D.h"
 #include "compute_treatment_uncertainties.h"
+#include "data_micro.h" 
 
 enum Scenario_selection_shape{ 
 	HyperSphere,
